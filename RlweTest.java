@@ -33,14 +33,12 @@ class RlweTest {
       /*
       System.out.println ("Initiator private key: ");
       System.out.println ("\t s = " + keysI.getPrivateKey().getS());
-      System.out.println ("\t e = " + keysI.getPrivateKey().getE() + "\n");
       
       System.out.println ("Initiator public key: ");
       System.out.println ("\t k = " + keysI.getPublicKey().getKey() + "\n");
       
       System.out.println ("Responder private key: ");
       System.out.println ("\t s = " + keysR.getPrivateKey().getS());
-      System.out.println ("\t e = " + keysR.getPrivateKey().getE() + "\n");
       
       System.out.println ("Responder public key: ");
       System.out.println ("\t k = " + keysR.getPublicKey().getKey() + "\n");

@@ -19,6 +19,9 @@ class Constants {
   protected static final int Q_TIMES_16 = 196624;
 
   protected static final int numRecDataBytes = 256;
+
+  protected static final byte FOURIER = 0;
+  protected static final byte ORDINARY = 1;
   
   protected static final Felm[] OMEGA = new Felm[] {
     new Felm (1),     new Felm (49),    new Felm (2401),  new Felm (7048),  new Felm (1260),

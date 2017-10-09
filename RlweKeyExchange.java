@@ -65,17 +65,6 @@ class RlweKeyExchange {
   }
  
  
-  /* 
-   * At a high level, 4 coefficients are used per bit of shared key produced. Computing 
-   * reconciliation data involves finding the closest lattice vector to those 4 coefficients (as a
-   * vector) and computing the discretized difference between those coefficients and the closest 
-   * lattice vector. This discretized difference is the reconciliation data vector, r. It is assumed 
-   * that translating a lattice point by r will move it closer to the correct lattice point. The
-   * function helpRec uses an algorithm for the closest vector problem to find r, and the function 
-   * rec computes reconciliation using r. The reconciliation data is 2 bits per coefficient so this
-   * is compressed before being sent to reduce bandwidth.
-   */
-
   private byte[] helpRec (RingElt v) {
     int i, j, k, x, rbit, norm;
     int[] v0 = new int[4];
