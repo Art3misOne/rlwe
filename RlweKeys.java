@@ -20,7 +20,9 @@ class RlwePublicKey {
 
 
   public RlwePublicKey (RlwePrivateKey k, RingElt a) {
-    key = a.pointwiseMultAdd(k.getS (), k.getE ());
+    RingElt e = Sample.getSample ();
+    e.ntt ();
+    key = a.pointwiseMultAdd (k.getS (), e);
   }
 
 
@@ -43,7 +45,7 @@ class RlwePublicKey {
     return key;
   }
 
-  
+
   public byte[] serialize () {
     return key.toByteArray();
   }
@@ -57,26 +59,22 @@ class RlwePublicKey {
 
 class RlwePrivateKey {
   private RingElt s;
-  private RingElt e;
+  private byte domain;
 
-
-  public RlwePrivateKey (RingElt sIn, RingElt eIn) {
+  public RlwePrivateKey (RingElt sIn) {
     s = new RingElt (sIn);
-    e = new RingElt (eIn);
   }
 
 
   public RlwePrivateKey () {
     s = Sample.getSample ();
-    e = Sample.getSample ();
+    domain = Constants.ORDINARY;
   }
 
 
   public RlwePrivateKey (byte[] inBytes) {
-    // Reconstruct a private key from a byte array assuming s and e are the same size.
-    int len = inBytes.length;
-    s = new RingElt (Arrays.copyOfRange (inBytes, 0, len / 2)); 
-    e = new RingElt (Arrays.copyOfRange (inBytes, len / 2, len));
+    domain = inBytes[0];
+    s = new RingElt (Arrays.copyOfRange (inBytes, 1, inBytes.length));
   }
 
 
@@ -85,36 +83,36 @@ class RlwePrivateKey {
   }
   
 
-  public RingElt getE () {
-    return e;
-  }
-
-
   public void toFourierDomain () {
-    s.ntt();
-    e.ntt();
+    if (domain == Constants.ORDINARY) {
+      s.ntt();
+      domain = Constants.FOURIER;
+    }
   }
 
 
   public void fromFourierDomain () {
-    s.nttInv();
-    e.nttInv();
+    if (domain == Constants.FOURIER) {
+      s.nttInv();
+      domain = Constants.ORDINARY;
+    }
   }
 
   
   public byte[] serialize () {
-    byte[] sba = s.toByteArray ();
-    byte[] eba = e.toByteArray ();
-    byte[] r = new byte[sba.length + eba.length];
-    System.arraycopy (sba, 0, r, 0, sba.length);
-    System.arraycopy (eba, 0, r, sba.length, eba.length);
-    return r;
+    byte[] sba = s.toByteArray();
+    byte[] ba = new byte[sba.length + 1];
+    
+    ba[0] = domain;
+    System.arraycopy (sba, 0, ba, 1, sba.length);
+    
+    return ba;
   }
 }
 
 
 class RlweKeyPair {
-  private final RlwePublicKey pubKey; 
+  private RlwePublicKey pubKey; 
   private final RlwePrivateKey privKey;
 
 
@@ -146,5 +144,11 @@ class RlweKeyPair {
 
   public RlwePublicKey getPublicKey () {
     return pubKey;
+  }
+
+
+  // Generate a new public key with the same private key but new error term
+  public void genNewPubKey (RingElt a) {
+    pubKey = new RlwePublicKey (privKey, a);
   }
 }
