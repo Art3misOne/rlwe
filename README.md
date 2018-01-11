@@ -49,9 +49,9 @@ use for computing the shared key.
 
        Generate key pair                               Generate key pair
        Transmit public key
-	                                               Wait (receive public key)
-	                                               Compute rec data
-						       Transmit public key and rec data
+	                                                   Wait (receive public key)
+	                                                   Compute rec data
+						           Transmit public key and rec data
        Wait (receive pub key, rec data)                Agreement (their public, my private, rec data)
        Agreement (their public, my private, rec data)
 
