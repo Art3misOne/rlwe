@@ -1,12 +1,15 @@
 This software is an implementation of the Ring Learning With Errors (RLWE) key exchange compatible with
-the Signal framework and style guide. After comparing runtimes of various implementations, this
-implementation largely follows the optimizations introduced by Singh and Chopra:
+the Signal framework and style guide. This implementation largely follows the one published by Singh
+and Chopra:
 
   - "A Practical Key Exchange for the Internet using Lattice Cryptography" by Vikram Singh.
     http://eprint.iacr.org/2015/138
   - "Even More Practical Key Exchanges for the Internet using Lattice Cryptography" by Vikram Singh and
     Arun Chopra. http://eprint.iacr.org/2015/1120.
   - www.github.com/vscrypto/ringlwe
+
+More recent work was published by Microsoft introducing additional optimizations. These optimizations
+are in progress and will be included in a future version of this implementation.
 
 Their implementation includes a wide range of options including 4 variations of sampling, 11 parameter
 sets (providing various levels of security), and 2 reconciliation mechanisms. Including a wide variety
@@ -28,9 +31,8 @@ decisions were:
   - All ring elements are kept in the Fourier domain until it is necessary to invert the transform.
     - Justification: This improves efficiency by reducing the number of transforms.
 
-This implementation is not a straight-forward translation from an existing C implementation into Java.
-Some features were pulled from various different C implementations and more adaptation was require to
-match the Signal framework.
+This implementation is not a straight-forward translation from an existing C implementation into Java
+as more adaptation was require to match the Signal framework.
 
 Note of caution: This implementation (and the RLWE key exchange in general) is not a drop-in
 replacement for ECDH. In ECDH and SIDH, both parties generate a key pair, transmit their public keys,
@@ -47,9 +49,9 @@ use for computing the shared key.
 
        Generate key pair                               Generate key pair
        Transmit public key
-	                                                   Wait (receive public key)
-	                                                   Compute rec data
-						           Transmit public key and rec data
+	                                               Wait (receive public key)
+	                                               Compute rec data
+						       Transmit public key and rec data
        Wait (receive pub key, rec data)                Agreement (their public, my private, rec data)
        Agreement (their public, my private, rec data)
 
