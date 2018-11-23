@@ -1,3 +1,7 @@
+Note: This repository will no longer be maintained. It is being replaced by the more generalized one found at:
+
+https://github.com/Art3misOne/newhope
+
 This software is an implementation of the Ring Learning With Errors (RLWE) key exchange using the style
 guide from Open Whisper Systems. This implementation originally followed the one published by Singh and
 Chopra:
