@@ -54,28 +54,14 @@ class RlweKeyExchange {
 
 
   public byte[][] respAgreement (RlwePrivateKey kR, RlwePublicKey kI) {
-    // Compute and return: [shared secret, reconciliation data]
-    byte[][] result = new byte[2][];
-    
+    // Sample eprime, then compute and return: [shared secret, reconciliation data]
     RingElt eprime = Sample.getSample ();
-
-    if (transmitDomain == Constants.ORDINARY) 
-      kI.toFourierDomain ();
-    
-    RingElt v = kI.getKey().pointwiseMult (kR.getS ());
-    v.nttInv();
-    v.ringAdd (eprime);
-
-    result[1] = helpRec (v);    
-    result[0] = rec (v, result[1]);
-    
-    return result;
+    return respAgreement (kR, kI, eprime);
   }
 
 
-  // For testing purposes
   public byte[][] respAgreement (RlwePrivateKey kR, RlwePublicKey kI, RingElt eprime) {
-    // Compute and return: [shared secret, reconciliation data]
+    // For a given eprime, compute and return: [shared secret, reconciliation data]
     byte[][] result = new byte[2][];
 
     if (transmitDomain == Constants.ORDINARY) 
@@ -127,7 +113,7 @@ class RlweKeyExchange {
       k = (Constants.Q2 - 1 - k) >> (Integer.SIZE - 1);  
 
       for (j = 0; j < 4; j++)
-	v0[j] = ((~k) & v0[j]) ^ (k & v1[j]);              // Set v0 to the closer of v0 and v1
+	v0[j] = ((~k) & v0[j]) ^ (k & v1[j]);       // Set v0 to the closer of v0 and v1
 
       rdata[i] = (v0[0] - v0[3]) & 3;
       rdata[i + 256] = (v0[1] - v0[3]) & 3;

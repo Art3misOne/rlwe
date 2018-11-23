@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 class RlweTest {
+  public static boolean debug = false;
 
   public static void main (String[] args) {
     RlweKeyExchange kex = new RlweKeyExchange ();
@@ -23,7 +24,7 @@ class RlweTest {
     int iterations = 10000;
     int nfailures = 0;
 
-    System.out.println ("\nTesting known test vector");
+    System.out.println ("\nTesting public key construction with known answer");
 
     RlwePrivateKey s1 = loadTestPrivKey ();
     RingElt s0 = loadTestError ();
@@ -34,11 +35,11 @@ class RlweTest {
     testValue.fromFourierDomain ();
     
     if (correctValue.getKey().equals (testValue.getKey()))
-      System.out.println ("... Known test vector passed");
+      System.out.println ("... Known answer test passed");
     else 
-      System.out.println ("... Known test vector failed");
+      System.out.println ("... Known answer test failed");
     
-    System.out.print ("\nTesting key exchange with randomly generated keys... ");
+    System.out.printf ("\nTesting %d key exchanges with randomly generated keys... ", iterations);
     
     for (i = 0; i < iterations; i++) {  
       startTime = System.nanoTime();
@@ -52,18 +53,23 @@ class RlweTest {
       secretI = kex.initAgreement (keysI.getPrivateKey(), keysR.getPublicKey(), recData);
     
       if (Arrays.equals (secretI, secretR)) {
-	//System.out.print ("Shared secrets match :)\nShared secret = ");
-	//printByteArray (secretI);
-	//System.out.println ("\n");
+	if (debug) {
+	  System.out.print ("Shared secrets match :)\nShared secret = ");
+	  printByteArray (secretI);
+	  System.out.println ("\n");
+	}
       }
 
       else {
-	System.out.print ("Shared secrets do not match :(\n secretI = ");
-	printByteArray (secretI);
-	System.out.print ("\n secretR = ");
-	printByteArray (secretR);
-	System.out.println ("\n");
-	nfailures++;
+	if (debug) {
+	  System.out.print ("Shared secrets do not match :(\n secretI = ");
+	  printByteArray (secretI);
+	  System.out.print ("\n secretR = ");
+	  printByteArray (secretR);
+	  System.out.println ("\n");
+	}
+	
+        nfailures++;
       }
       
       endTime = System.nanoTime();
