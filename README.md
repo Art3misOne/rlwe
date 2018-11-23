@@ -1,5 +1,5 @@
 This software is an implementation of the Ring Learning With Errors (RLWE) key exchange using the style
-guide from Open Whisper Systems. This implementation largely follows the one published by Singh and
+guide from Open Whisper Systems. This implementation originally followed the one published by Singh and
 Chopra:
 
   - "A Practical Key Exchange for the Internet using Lattice Cryptography" by Vikram Singh.
@@ -15,11 +15,11 @@ about 2.75 times faster.
   - "Speeding up the Number Theoretic Transform for Faster Ideal Lattice-Based Cryptography" by Patrick
   Longa and Michael Naehrig. https://eprint.iacr.org/2016/504.pdf.
 
-With these optimizations, a new parameter has been introduced to facilitate compatibility between
-different Fourier optimizations. Keys can either be transmitted in the Fourier domain (for greater
-efficiency) or the Ordinary domain (for interoperability). Preliminary tests indicate that it takes
-about 1.17 times as long to complete an exchange transmitting in the ordinary domain than in the
-Fourier domain.
+With these optimizations, a new parameter has been introduced to facilitate regression testing as well
+as compatibility between different Fourier optimizations. Keys can either be transmitted in the Fourier 
+domain (for greater efficiency) or the Ordinary domain (for interoperability). Preliminary tests indicate 
+that it takes about 1.17 times as long to complete an exchange transmitting in the ordinary domain than 
+in the Fourier domain.
 
 Note of caution: This implementation (and the RLWE key exchange in general) is not a drop-in
 replacement for ECDH. In ECDH, both parties generate a key pair, transmit their public keys,
@@ -36,9 +36,9 @@ use for computing the shared key.
 
        Generate key pair                               Generate key pair
        Transmit public key
-	                                               Wait (receive public key)
-	                                               Compute rec data
-						       Transmit public key and rec data
+                                                       Wait (receive public key)
+                                                       Compute rec data
+                                                       Transmit public key and rec data
        Wait (receive pub key, rec data)                Agreement (their public, my private, rec data)
        Agreement (their public, my private, rec data)
 
