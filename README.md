@@ -15,8 +15,8 @@ about 2.75 times faster.
   - "Speeding up the Number Theoretic Transform for Faster Ideal Lattice-Based Cryptography" by Patrick
   Longa and Michael Naehrig. https://eprint.iacr.org/2016/504.pdf.
 
-With these optimizations, a new parameter has been introduced to facilitate regression testing as well
-as compatibility between different Fourier optimizations. Keys can either be transmitted in the Fourier 
+With these optimizations, a new parameter has been introduced to support regression testing and facilitate
+compatibility between different Fourier optimizations. Keys can either be transmitted in the Fourier 
 domain (for greater efficiency) or the Ordinary domain (for interoperability). Preliminary tests indicate 
 that it takes about 1.17 times as long to complete an exchange transmitting in the ordinary domain than 
 in the Fourier domain.
